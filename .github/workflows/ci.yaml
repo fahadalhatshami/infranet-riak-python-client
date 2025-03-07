@@ -1,0 +1,34 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: false
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          cache: pip
+
+      - name: Build package
+        run: pipx run build -w
+
+      - name: Upload package wheel
+        uses: actions/upload-artifact@v4
+        with:
+          path: dist/*.whl
+          retention-days: 14
